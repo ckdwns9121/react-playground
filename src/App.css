@@ -40,3 +40,27 @@
 .read-the-docs {
   color: #888;
 }
+
+/* App.css */
+
+.dragging {
+  opacity: 0.5;
+  background-color: transparent;
+  border: 2px dashed red;
+}
+
+.drag-item {
+  padding: 8px;
+  margin: 4px;
+  background-color: lightgray;
+  border: 1px solid black;
+  cursor: grab;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.drag-item.dragging {
+  background-color: transparent;
+  border: 2px dashed red;
+  opacity: 0.5;
+  transform: scale(1.05);
+}
