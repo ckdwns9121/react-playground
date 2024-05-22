@@ -9,22 +9,16 @@ function App() {
     { id: "2", name: "Item 2🧡" },
     { id: "3", name: "Item 3💘" },
   ]);
-  const [dropItems, setDropItems] = useState<{ name: string; id: string }[]>([]);
   const [draggedItemIndex, setDraggedItemIndex] = useState<number | null>(null);
 
-  const handleDrop = (id: string) => {
-    const item = dragItems.find((item) => item.id === id);
-    if (item) {
-      setDropItems((prevItems) => [...prevItems, item]);
-    }
-  };
-
-  const onDragStart = (index: number) => {
+  /** 드래그 시작 시 인덱스 설정 */
+  const handleDragStart = (index: number) => {
     setDraggedItemIndex(index);
   };
 
-  const onDragEnter = (index: number) => {
-    console.log("on DragEnter");
+  /** 드래그 아이템 위에 컴포넌트가 들어왔을 시 인덱스 변경*/
+  const handleDragEnter = (index: number) => {
+    // console.log("on DragEnter");
     if (draggedItemIndex === null || draggedItemIndex === index) return;
 
     const newDragItems = [...dragItems];
@@ -34,7 +28,8 @@ function App() {
     setDragItems(newDragItems);
   };
 
-  const onDragEnd = () => {
+  /** 드래그 끝났을 때 초기화 */
+  const handleDragEnd = () => {
     setDraggedItemIndex(null);
   };
 
@@ -43,21 +38,21 @@ function App() {
       <h2>Drag and Drop Example</h2>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div>
-          <h3>Drag Items</h3>
+          <h3 draggable>Drag Items</h3>
           {dragItems.map((item, index) => (
             <DragItem
               key={item.id}
               name={`${item.name}`}
               id={item.id}
               index={index}
-              onDragStart={onDragStart}
-              onDragEnter={onDragEnter}
-              onDragEnd={onDragEnd}
+              onDragStart={handleDragStart}
+              onDragEnter={handleDragEnter}
+              onDragEnd={handleDragEnd}
               isDragging={draggedItemIndex === index}
             />
           ))}
         </div>
-        <DropBox onDrop={handleDrop} droppedItems={dropItems} />
+        <DropBox dragItems={dragItems} />
       </div>
     </div>
   );
