@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 
 export interface DropBoxItemProps {
   name: string;
@@ -9,6 +9,7 @@ export interface DropBoxItemProps {
   onDragEnd: () => void;
   onDropBar: (index: string) => void;
   isDragging: boolean;
+  dropItemOver: boolean;
 }
 
 const DropBoxItem: FC<DropBoxItemProps> = ({
@@ -20,8 +21,9 @@ const DropBoxItem: FC<DropBoxItemProps> = ({
   onDragEnd,
   onDropBar,
   isDragging,
+  dropItemOver,
 }) => {
-  const [topEnter, setTopSenter] = useState(false);
+  const [topEnter, setTopEnter] = useState(false);
   const [bottomEnter, setBottomEnter] = useState(false);
 
   /** 드롭 박스 리스트에있는 아이템 드래그 시작 */
@@ -42,11 +44,11 @@ const DropBoxItem: FC<DropBoxItemProps> = ({
     const name = e.dataTransfer.getData("text/plain");
     console.log(name);
     if (name.includes("drop-item")) return;
-    setTopSenter(true);
+    setTopEnter(true);
   };
 
   const handleTopDragLeave = () => {
-    setTopSenter(false);
+    setTopEnter(false);
   };
 
   const handleBottomDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
@@ -63,6 +65,7 @@ const DropBoxItem: FC<DropBoxItemProps> = ({
     console.log("drop bar", index);
     onDropBar(index.toString());
   };
+
   return (
     <>
       {index === 0 && (

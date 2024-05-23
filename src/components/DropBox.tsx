@@ -17,12 +17,8 @@ const DropBox = ({ dragItems }: DropBoxProps) => {
 
   /** 드랍 끝났을 때  드랍된 아이템에 추가*/
   const handleDropInBox = (id: string) => {
-    // console.log("handle Drop이 왜 호출?");
-    // console.log(id);
     const index = id.replace("drag-item", "");
-    // console.log(index);
     const dragItem = dragItems.find((item) => item.id === index);
-    // console.log(dragItem);
 
     if (dragItem) {
       const dropItem = dropItems.find((item) => item.id === dragItem.id);
@@ -58,6 +54,7 @@ const DropBox = ({ dragItems }: DropBoxProps) => {
     setDropItemOver(false);
   };
 
+  /** 드롭 박스에 드래그 아이템이 떨어졌을 때 */
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDropItemOver(false);
@@ -113,6 +110,7 @@ const DropBox = ({ dragItems }: DropBoxProps) => {
           onDragEnter={handleDragEnterToDropItem}
           onDropBar={handleDropBar}
           isDragging={dropItemDragIndex === index}
+          dropItemOver={dropItemOver}
         />
       ))}
       {dropItems.length === 0 && <>Drop here</>}
