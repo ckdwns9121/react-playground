@@ -11,16 +11,19 @@ export interface DragItemProps {
 }
 
 const DragItem: FC<DragItemProps> = ({ name, id, index, onDragStart, onDragEnter, onDragEnd, isDragging }) => {
+  /** 드래그 시작 시 인덱스 넘겨줌 */
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     onDragStart(index);
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("text/plain", `drag-item${id}`);
   };
 
+  /** DragItem 컴포넌트에 현재 드래그중인 컴포넌트가 들어오면 기존 컴포넌트의 순서를 알려줌*/
   const handleDragEnter = () => {
     onDragEnter(index);
   };
 
+  /** 드래그가 끝나면 드래그 index 초기화*/
   const handleDragEnd = () => {
     onDragEnd();
   };
