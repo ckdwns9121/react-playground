@@ -1,35 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useDragAndDrop } from "./hooks/useDragAndDrop";
+import Dragable from "./components/dnd/Dragable";
+import DropContext from "./components/dnd/DropContext";
+import Item from "./components/item/Item";
+
+import "./App.css";
+
+export const INIT_ITEMS = [
+  { id: "1", name: "Item 1❤" },
+  { id: "2", name: "Item 2🧡" },
+  { id: "3", name: "Item 3💘" },
+  { id: "4", name: "Item 4❤" },
+  { id: "5", name: "Item 5🧡" },
+  { id: "6", name: "Item 6💘" },
+];
 
 function App() {
-  const [count, setCount] = useState(0)
+  const {
+    items: dragItems,
+    draggedItemIndex,
+    handleDragStart,
+    handleDragEnter,
+    handleDragEnd,
+  } = useDragAndDrop(INIT_ITEMS);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div>
+      <h2>Drag and Drop Example</h2>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div>
+          <h3 draggable>Drag Items</h3>
+          {dragItems.map((item, index) => (
+            <Dragable
+              key={item.id}
+              dragabbleId={item.id}
+              index={index}
+              onItemDragStart={handleDragStart}
+              onItemDragEnter={handleDragEnter}
+              onItemDragEnd={handleDragEnd}
+              isDragging={draggedItemIndex === index}
+            >
+              <Item name={item.name} />
+            </Dragable>
+          ))}
+        </div>
+        <DropContext dragItems={dragItems} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
