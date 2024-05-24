@@ -27,11 +27,14 @@ export const DndProvider = <T extends { draggedId: string | number }>({ children
   };
 
   const handleDragEnter = (index: number) => {
+    console.log("여기 들어온다잉");
     if (draggedItemIndex === null || draggedItemIndex === index) return;
 
     const newItems = [...dragItems];
     const [draggedItem] = newItems.splice(draggedItemIndex, 1);
     newItems.splice(index, 0, draggedItem);
+
+    console.log(newItems);
     setDraggedItemIndex(index);
     setDraggedItems(newItems);
   };

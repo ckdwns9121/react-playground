@@ -9,8 +9,13 @@ export interface DraggableProps extends HTMLAttributes<HTMLDivElement> {
   style?: CSSProperties;
 }
 
-const Draggable = ({ children, draggableId, index, isDragging = false, style, ...props }: DraggableProps) => {
-  const { handleDragStart: onDragStart, handleDragEnd: onDragEnd, handleDragEnter: onDragEnter } = useDnd();
+const Draggable = ({ children, draggableId, index, style, ...props }: DraggableProps) => {
+  const {
+    handleDragStart: onDragStart,
+    handleDragEnd: onDragEnd,
+    handleDragEnter: onDragEnter,
+    draggedItemIndex,
+  } = useDnd();
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     onDragStart(index);
@@ -26,6 +31,8 @@ const Draggable = ({ children, draggableId, index, isDragging = false, style, ..
     onDragEnd();
   };
 
+  const isDragging = draggedItemIndex === index;
+
   return (
     <div
       draggable
@@ -35,7 +42,7 @@ const Draggable = ({ children, draggableId, index, isDragging = false, style, ..
       style={{
         ...style,
 
-        // cursor: "grab",
+        cursor: "grab",
         // backgroundColor: isDragging ? "transparent" : "transparent",
         border: isDragging ? "2px solid blue" : "1px solid transparent",
         transform: isDragging ? "scale(1.1)" : "scale(1)",
