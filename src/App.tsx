@@ -1,17 +1,19 @@
 import { useState } from "react";
-import DragItem from "./components/DragItem";
-import DropZone from "./components/DropZone";
+import Draggable from "./components/dnd/Dragable";
+import Droppable from "./components/dnd/Droppable";
+
+import { DndProvider } from "./components/context/DndProvider";
 import "./App.css";
 
 function App() {
   /** 드래그 할 아이템 */
-  const [dragItems, setDragItems] = useState<{ name: string; id: string }[]>([
-    { id: "1", name: "Item 1❤" },
-    { id: "2", name: "Item 2🧡" },
-    { id: "3", name: "Item 3💘" },
-    { id: "4", name: "Item 4❤" },
-    { id: "5", name: "Item 5🧡" },
-    { id: "6", name: "Item 6💘" },
+  const [dragItems, setDragItems] = useState<{ name: string; draggedId: string }[]>([
+    { draggedId: "1", name: "Item 1❤" },
+    { draggedId: "2", name: "Item 2🧡" },
+    { draggedId: "3", name: "Item 3💘" },
+    { draggedId: "4", name: "Item 4❤" },
+    { draggedId: "5", name: "Item 5🧡" },
+    { draggedId: "6", name: "Item 6💘" },
   ]);
 
   /** 현재 드래그중인 인덱스 */
@@ -41,27 +43,29 @@ function App() {
   };
 
   return (
-    <div>
-      <h2>Drag and Drop Example</h2>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div>
-          <h3 draggable>Drag Items</h3>
-          {dragItems.map((item, index) => (
-            <DragItem
-              key={item.id}
-              name={`${item.name}`}
-              id={item.id}
-              index={index}
-              onDragStart={handleDragStart}
-              onDragEnter={handleDragEnter}
-              onDragEnd={handleDragEnd}
-              isDragging={draggedItemIndex === index}
-            />
-          ))}
-        </div>
-        <DropZone dragItems={dragItems} />
-      </div>
-    </div>
+    <DndProvider initItems={dragItems}>hello</DndProvider>
+    // <div>
+    //   <h2>Drag and Drop Example</h2>
+    //   <div style={{ display: "flex", justifyContent: "space-between" }}>
+    //     <div>
+    //       <h3 draggable>Drag Items</h3>
+    //       {dragItems.map((item, index) => (
+    //         <Draggable
+    //           key={item.id}
+    //           draggableId={item.id}
+    //           index={index}
+    //           onItemDragStart={handleDragStart}
+    //           onItemDragEnter={handleDragEnter}
+    //           onItemDragEnd={handleDragEnd}
+    //           isDragging={draggedItemIndex === index}
+    //         >
+    //           아이템{item.id}
+    //         </Draggable>
+    //       ))}
+    //     </div>
+    //     <Droppable dragItems={dragItems} />
+    //   </div>
+    // </div>
   );
 }
 

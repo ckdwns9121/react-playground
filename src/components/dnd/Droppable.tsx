@@ -19,7 +19,9 @@ const Dropaable = <T extends { id: string }>({ dragItems, ...props }: DroppableP
   const [dropzoneOver, setDropzoneOver] = useState(false);
 
   const onAddDropItem = (id: string) => {
+    console.log(id);
     const index = id.replace("drag-item", "");
+    console.log(index);
     const dragItem = dragItems.find((item) => item.id === index);
 
     if (dragItem && !dropItems.find((item) => item.id === dragItem.id)) {
