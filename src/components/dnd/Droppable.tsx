@@ -1,12 +1,12 @@
 import { HTMLAttributes, useState } from "react";
 import { useDragAndDrop } from "../../hooks/useDragAndDrop.ts";
-import DropItem from "./DropItem";
+import DropItem from "./DropItem.tsx";
 
-interface DropContextProps<T extends { id: string }> extends HTMLAttributes<HTMLDivElement> {
+interface DroppableProps<T extends { id: string }> extends HTMLAttributes<HTMLDivElement> {
   dragItems: T[];
 }
 
-const DropContext = <T extends { id: string }>({ dragItems, ...props }: DropContextProps<T>) => {
+const Dropaable = <T extends { id: string }>({ dragItems, ...props }: DroppableProps<T>) => {
   const {
     items: dropItems,
     setItems: setDropItems,
@@ -92,4 +92,4 @@ const DropContext = <T extends { id: string }>({ dragItems, ...props }: DropCont
   );
 };
 
-export default DropContext;
+export default Dropaable;

@@ -1,8 +1,7 @@
 import { FC, useState } from "react";
 
-export interface DropBoxItemProps {
-  name: string;
-  id: string;
+export interface DropItemProps {
+  draggedId: string | number;
   index: number;
   onDragStart: (index: number) => void;
   onDragEnter: (index: number) => void;
@@ -12,23 +11,14 @@ export interface DropBoxItemProps {
   dropItemOver: boolean;
 }
 
-const DropZoneItem: FC<DropBoxItemProps> = ({
-  name,
-  id,
-  index,
-  onDragStart,
-  onDragEnter,
-  onDragEnd,
-  onSwap,
-  isDragging,
-}) => {
+const DropItem: FC<DropItemProps> = ({ draggedId, index, onDragStart, onDragEnter, onDragEnd, onSwap, isDragging }) => {
   const [topDropAreaEnter, setTopDropAreaEnter] = useState(false);
   const [bottomDropAreaEnter, setBottomDropAreaEnter] = useState(false);
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     onDragStart(index);
     e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", `drop-item${id}`);
+    e.dataTransfer.setData("text/plain", `drop-item${draggedId}`);
   };
 
   const handleDragEnter = () => {
@@ -61,13 +51,9 @@ const DropZoneItem: FC<DropBoxItemProps> = ({
 
   /** 상 하단 공간에 드랍이 발생했을 때 */
   const handleDropArea = (e: React.DragEvent<HTMLDivElement>, swapIndex: number) => {
-    console.log(e);
     e.stopPropagation();
     console.log("상하단 공간 드랍 발생");
-
     const name = e.dataTransfer.getData("text/plain");
-    console.log(name);
-
     onSwap(name, swapIndex);
     setTopDropAreaEnter(false);
     setBottomDropAreaEnter(false);
@@ -104,7 +90,7 @@ const DropZoneItem: FC<DropBoxItemProps> = ({
           opacity: isDragging ? 0.5 : 1,
         }}
       >
-        {name}
+        아이템 {draggedId}
       </div>
       <div
         style={{
@@ -120,4 +106,4 @@ const DropZoneItem: FC<DropBoxItemProps> = ({
   );
 };
 
-export default DropZoneItem;
+export default DropItem;

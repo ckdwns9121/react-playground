@@ -1,39 +1,29 @@
 import { HTMLAttributes, CSSProperties } from "react";
+import { useDnd } from "./useDnd";
 
 export interface DraggableProps extends HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
-  draggableId: string;
+  draggableId: string | number;
   index: number;
-  onItemDragStart: (index: number) => void;
-  onItemDragEnter: (index: number) => void;
-  onItemDragEnd: () => void;
   isDragging?: boolean;
   style?: CSSProperties;
 }
 
-const Draggable = ({
-  children,
-  draggableId,
-  index,
-  onItemDragStart,
-  onItemDragEnter,
-  onItemDragEnd,
-  isDragging = false,
-  style,
-  ...props
-}: DraggableProps) => {
+const Draggable = ({ children, draggableId, index, isDragging = false, style, ...props }: DraggableProps) => {
+  const { handleDragStart: onDragStart, handleDragEnd: onDragEnd, handleDragEnter: onDragEnter } = useDnd();
+
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
-    onItemDragStart(index);
+    onDragStart(index);
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("text/plain", `drag-item${draggableId}`);
   };
 
   const handleDragEnter = () => {
-    onItemDragEnter(index);
+    onDragEnter(index);
   };
 
   const handleDragEnd = () => {
-    onItemDragEnd();
+    onDragEnd();
   };
 
   return (
