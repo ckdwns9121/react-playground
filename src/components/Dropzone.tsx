@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useDragAndDrop } from "../hooks/useDragAndDrop";
 import DropZoneItem from "./DropzoneItem";
-import { INIT_ITEMS } from "../App";
 
 interface DropBoxProps {
   dragItems: { name: string; id: string }[];
@@ -15,7 +14,6 @@ const DropZone = ({ dragItems }: DropBoxProps) => {
     handleDragStart: handleDropItemDragStart,
     handleDragEnter: handleSwapDropItem,
     handleDragEnd: handleDragIndexInit,
-    handleSwap,
   } = useDragAndDrop<{ name: string; id: string }>([]);
 
   const [dropzoneOver, setDropzoneOver] = useState(false);
