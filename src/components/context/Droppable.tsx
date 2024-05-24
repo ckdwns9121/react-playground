@@ -2,27 +2,26 @@ import { HTMLAttributes, useState } from "react";
 import { useDnd } from "./useDnd";
 import DropItem from "./DropItem.tsx";
 
-interface DropzoneProps<T extends { draggedId: string }> extends HTMLAttributes<HTMLDivElement> {
+interface DropzoneProps<T extends { id: string | number }> extends HTMLAttributes<HTMLDivElement> {
   dragItems: T[];
 }
 
-const Dropzone = <T extends { draggedId: string }>({ dragItems, ...props }: DropzoneProps<T>) => {
+const Dropzone = <T extends { id: string | number }>({ dragItems, ...props }: DropzoneProps<T>) => {
   const {
-    dragItems: dropItems,
-    setDraggedItems: setDropItems,
     draggedItemIndex: dropItemDragIndex,
     handleDragStart: handleDropItemDragStart,
     handleDragEnter: handleSwapDropItem,
     handleDragEnd: handleDragIndexInit,
   } = useDnd();
 
+  const [dropItems, setDropItems] = useState<T[]>([]);
   const [dropzoneOver, setDropzoneOver] = useState(false);
 
   const onAddDropItem = (id: string) => {
     const index = id.replace("drag-item", "");
-    const dragItem = dragItems.find((item) => item.draggedId === index);
+    const dragItem = dragItems.find((item) => item.id === index);
 
-    if (dragItem && !dropItems.find((item) => item.draggedId === dragItem.draggedId)) {
+    if (dragItem && !dropItems.find((item) => item.id === dragItem.id)) {
       setDropItems([...dropItems, dragItem]);
     }
   };
@@ -31,9 +30,9 @@ const Dropzone = <T extends { draggedId: string }>({ dragItems, ...props }: Drop
     if (!id.includes("drag-item")) return;
 
     const index = id.replace("drag-item", "");
-    const dragItem = dragItems.find((item) => item.draggedId === index);
+    const dragItem = dragItems.find((item) => item.id === index);
     if (dragItem) {
-      const findDragItem = dropItems.find((item) => item.draggedId === dragItem.draggedId);
+      const findDragItem = dropItems.find((item) => item.id === dragItem.id);
 
       if (findDragItem) return;
 
@@ -77,8 +76,8 @@ const Dropzone = <T extends { draggedId: string }>({ dragItems, ...props }: Drop
     >
       {dropItems.map((item, index) => (
         <DropItem
-          key={item.draggedId}
-          draggedId={item.draggedId}
+          key={item.id}
+          draggedId={item.id}
           index={index}
           onDragStart={handleDropItemDragStart}
           onDragEnd={handleDragIndexInit}

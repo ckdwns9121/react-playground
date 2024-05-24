@@ -1,6 +1,6 @@
 import { useState, createContext, ReactNode, Dispatch, SetStateAction } from "react";
 
-export interface DndContextProps<T extends { draggedId: string | number }> {
+export interface DndContextProps<T extends { id: string | number }> {
   dragItems: T[];
   setDraggedItems: Dispatch<SetStateAction<T[]>>;
   draggedItemIndex: number | null;
@@ -9,17 +9,20 @@ export interface DndContextProps<T extends { draggedId: string | number }> {
   handleDragEnd: () => void;
 }
 
-interface DndProviderProps<T extends { draggedId: string | number }> {
-  initItems: T[];
+interface DndProviderProps<T extends { id: string | number }> {
+  dragItems: T[];
+  setDraggedItems: Dispatch<SetStateAction<T[]>>;
   children: ReactNode;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const DndContext = createContext<DndContextProps<any> | undefined>(undefined);
 
-export const DndProvider = <T extends { draggedId: string | number }>({ children, initItems }: DndProviderProps<T>) => {
-  const [dragItems, setDraggedItems] = useState<T[]>(initItems);
-
+export const DndProvider = <T extends { id: string | number }>({
+  children,
+  dragItems,
+  setDraggedItems,
+}: DndProviderProps<T>) => {
   const [draggedItemIndex, setDraggedItemIndex] = useState<number | null>(null);
 
   const handleDragStart = (index: number) => {
@@ -27,7 +30,6 @@ export const DndProvider = <T extends { draggedId: string | number }>({ children
   };
 
   const handleDragEnter = (index: number) => {
-    console.log("여기 들어온다잉");
     if (draggedItemIndex === null || draggedItemIndex === index) return;
 
     const newItems = [...dragItems];

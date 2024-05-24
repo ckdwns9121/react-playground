@@ -3,7 +3,7 @@ import { useDnd } from "./useDnd";
 
 export interface DraggableProps extends HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
-  draggableId: string | number;
+  draggableId: string;
   index: number;
   isDragging?: boolean;
   style?: CSSProperties;
@@ -20,7 +20,7 @@ const Draggable = ({ children, draggableId, index, style, ...props }: DraggableP
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     onDragStart(index);
     e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", `drag-item${draggableId}`);
+    e.dataTransfer.setData("text/plain", `${draggableId}${index}`);
   };
 
   const handleDragEnter = () => {
