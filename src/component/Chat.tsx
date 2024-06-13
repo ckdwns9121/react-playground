@@ -9,13 +9,18 @@ const SystemMessage = {
 
 const socket = io("http://localhost:3000", { autoConnect: false });
 
-export function Chat({ currentUser, room, onLogout }: any) {
+interface ChatProps {
+  currentUser: string;
+  room: string;
+  onLogout: () => void;
+}
+
+export function Chat({ currentUser, room, onLogout }: ChatProps) {
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState([SystemMessage]);
 
   useEffect(() => {
     socket.connect();
-
     socket.on("connect", () => {
       console.log("Socket connected");
     });
@@ -45,7 +50,7 @@ export function Chat({ currentUser, room, onLogout }: any) {
     };
   }, []);
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter" || inputValue.trim().length === 0) return;
 
     socket.emit("chat", { author: currentUser, body: inputValue.trim(), room: room });
